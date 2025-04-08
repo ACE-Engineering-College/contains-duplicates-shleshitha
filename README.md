@@ -1,3 +1,16 @@
+# Instructions
+# Click on code button in github and copy the url of your assignment .
+# Open your terminal and do git clone <paste the above copied url here> 
+# In the solutions folder. Pick the language file you want to work on Eg: python, java , c , c++
+# COpy paste the code you have submitted in the leet code link here exactly same.
+# Commit and push . 
+# Note: Dont create new branches . Push in the main branch only 
+# You must submit the code solution in both leet code and here. 
+
+
+
+
+
 # 🚀 GitHub Automation for Multi-Language Testing
 
 This repository is designed to automate the testing of solutions written in **C, C++, Python, and Java**. The project includes:
@@ -18,4 +31,3 @@ Once you have successfully solved it on LeetCode, proceed with implementing the 
 ---
 
 ## 📌 Project Structure
-
