@@ -6,7 +6,7 @@ on:
       - "solutions/**"
   pull_request:
     paths:
-      - "tests/**"
+      - "solutions/**"
 
 jobs:
   run-tests:
@@ -21,16 +21,16 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y gcc g++ openjdk-17-jdk python3 python3-pip
-          pip install pytest  # Install pytest for Python tests
+          pip install pytest
 
       - name: Detect Changed Files
         id: changed-files
         run: |
           BEFORE_COMMIT="${{ github.event.before }}"
           if [ -z "$BEFORE_COMMIT" ] || ! git cat-file -e "$BEFORE_COMMIT"^{commit}; then
-            BEFORE_COMMIT=$(git rev-parse HEAD~1)  # Use last commit as fallback
+            BEFORE_COMMIT=$(git rev-parse HEAD~1)
           fi
-          
+
           CHANGED_FILES=$(git diff --name-only "$BEFORE_COMMIT" HEAD)
           echo "Detected changed files: $CHANGED_FILES"
 
@@ -57,43 +57,39 @@ jobs:
             exit 1
           fi
 
-      # Run C Tests
       - name: Compile and Run C Program
         if: ${{ env.language == 'C' }}
         run: |
-          if [ -f "tests/test_c.c" ]; then
-            gcc -o c_test tests/test_c.c solutions/*.c && ./c_test
+          if [ -f "tests/test.c" ]; then
+            gcc -o c_test tests/test.c solutions/*.c && ./c_test
           else
             echo "No C test file found. Skipping."
           fi
 
-      # Run C++ Tests
       - name: Compile and Run C++ Program
         if: ${{ env.language == 'C++' }}
         run: |
-          if [ -f "tests/test_cpp.cpp" ]; then
-            g++ -o cpp_test tests/test_cpp.cpp solutions/*.cpp && ./cpp_test
+          if [ -f "tests/test.cpp" ]; then
+            g++ -o cpp_test tests/test.cpp solutions/*.cpp && ./cpp_test
           else
             echo "No C++ test file found. Skipping."
           fi
 
-      # Run Python Tests
       - name: Run Python Tests
         if: ${{ env.language == 'Python' }}
         run: |
-          if [ -f "tests/test_python.py" ]; then
-            pytest tests/test_python.py
+          if [ -f "tests/test.py" ]; then
+            pytest tests/test.py
           else
             echo "No Python test file found. Skipping."
           fi
 
-      # Run Java Tests
       - name: Compile and Run Java Program
         if: ${{ env.language == 'Java' }}
         run: |
-          if [ -f "tests/MainTest.java" ]; then
-            javac -d . solutions/*.java tests/*.java  # Compile Java files
-            java tests.MainTest  # Run Java test file
+          if [ -f "tests/Test.java" ]; then
+            javac -d . solutions/*.java tests/*.java
+            java tests.Test
           else
             echo "No Java test file found. Skipping."
           fi
